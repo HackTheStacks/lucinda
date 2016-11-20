@@ -1,0 +1,26 @@
+<dom-module id="lucinda-form">
+  <template>
+    <iron-form>
+      <paper-input name="title" label="Title"></paper-input>
+      <paper-input name="expedition" label="Expedition"></paper-input>
+      <paper-input name="dates" label="Dates"></paper-input>
+      <paper-input name="creator" label="Creator"></paper-input>
+      <paper-input name="locale" label="Where"></paper-input>
+      <paper-textarea name="notes" label="Notes"></paper-textarea>
+      <paper-input name="current_location" label="Current Location"></paper-input>
+
+      <paper-button raised onclick="submitForm()">Submit</paper-button>
+    </iron-form>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'lucinda-form',
+      submitForm: function() {
+        console.error('TODO!');
+      }
+    });
+
+  </script>
+</dom-module>
+

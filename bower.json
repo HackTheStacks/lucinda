@@ -25,6 +25,8 @@
     "paper-menu-button": "PolymerElements/paper-menu-button#^1.5.2",
     "paper-tabs": "PolymerElements/paper-tabs#^1.7.0",
     "paper-card": "PolymerElements/paper-card#^1.1.4",
-    "iron-ajax": "^1.4.3"
+    "iron-ajax": "^1.4.3",
+    "paper-spinner": "^1.2.1",
+    "paper-dialog": "^1.1.0"
   }
 }

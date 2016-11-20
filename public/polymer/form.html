@@ -9,13 +9,19 @@
       <paper-textarea name="notes" label="Notes"></paper-textarea>
       <paper-input name="current_location" label="Current Location"></paper-input>
 
+
       <paper-button raised on-tap="submitForm">Submit</paper-button>
+
+      <input type="hidden" name="_csrf" value="[[csrfToken]]" />
     </form>
   </template>
 
   <script>
     Polymer({
       is: 'lucinda-form',
+      properties: {
+        csrf: String,
+      },
       presubmit: function() {
         var params = this.$.form.request.params;
         // TODO add any changes to request parameters here

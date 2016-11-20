@@ -1,0 +1,19 @@
+<dom-module id="lucinda-everything">
+  <template>
+    <lucinda-navigation selected="{{selected}}"></lucinda-navigation>
+    <lucinda-form csrf-token="[[ csrfToken ]]" hidden$="{{_notEqual(selected, 0)}}"></lucinda-form>
+    <p hidden$="{{_notEqual(selected, 1)}}">This is the catalogue!</p>
+  </template>
+
+  <script>
+    Polymer({
+      properties: {
+        csrfToken: String,
+      },
+      is: 'lucinda-everything',
+      _notEqual: function(a, b) {
+        return a !== b;
+      }
+    });
+  </script>
+</dom-module>

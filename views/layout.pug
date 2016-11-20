@@ -12,11 +12,9 @@ html
     link(rel='import', href='/polymer/base.html')
 
   body
-    lucinda-navigation
-
-    .container
-      include partials/flash
-      block content
+    block everything
+      .container
+        block content
 
     script(src='/js/lib/jquery-2.2.4.min.js')
     script(src='/js/main.js')

@@ -18,9 +18,13 @@
   <script>
     Polymer({
       is: 'lucinda-navigation',
-      ready: function(){
-        console.log(this.selected);
-      },
+      properties: {
+        selected: {
+          type: Number,
+          notify: true,
+          value: 0
+        }
+      }
     });
   </script>
 </dom-module>

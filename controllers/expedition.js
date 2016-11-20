@@ -104,12 +104,28 @@ exports.mockSearch = (req, res) => {
         return;
     }
 
-    res.send(JSON.stringify([
+    res.json([
         { text: query + 'foo', id: 'amnhc_00' },
         { text: query + 'bar', id: 'amnhc_01' },
         { text: query + 'baz', id: 'amnhc_02' },
         { text: query + 'flux', id: 'amnhc_03' }
-    ]));
+    ]);
+}
+
+exports.getAll = (req, res) => {
+  var expeditions = Expedition.find();
+  var people = Person.find();
+
+  const getXml = function(el) {
+    return el.xml;
+  };
+
+  Promise.all([expeditions, people]).then((results) => {
+    res.json({
+      expeditions: results[0].map(getXml),
+      people: results[1].map(getXml)
+    });
+  });
 }
 
 var generateIdentity = function(name, entityType) {

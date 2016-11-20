@@ -1,7 +1,7 @@
 @import "themes/default/variables";
 
 @import "lib/bootstrap/bootstrap";
-@import "lib/font-awesome/font-awesome";
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 @import "themes/default/default";
 
@@ -11,10 +11,10 @@
 html {
   position: relative;
   min-height: 100%;
+  font-family: 'Roboto', sans-serif;
 }
 
 body {
-  padding-top: 60px;
   margin-bottom: 75px;
 }
 

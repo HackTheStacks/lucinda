@@ -6,19 +6,18 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
     meta(name='theme-color' content='#4DA5F4')
     meta(name='csrf-token', content=_csrf)
-    title #{title} - Hackathon Starter
+    title #{title} - Lucinda
     link(rel='shortcut icon', href='/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
     link(rel='import', href='/polymer/base.html')
 
   body
-    include partials/header
+    lucinda-navigation
 
     .container
+      h3 EXPEDITION TRACKER
       include partials/flash
       block content
-
-    include partials/footer
 
     script(src='/js/lib/jquery-2.2.4.min.js')
     script(src='/js/main.js')

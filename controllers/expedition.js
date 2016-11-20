@@ -84,24 +84,33 @@ exports.postCreateExpedition = (req, res) => {
 
     var title = params.title;
     var dates = params.dates;
-	var start_date = params.start_date;
+    var start_date = params.start_date;
 	var end_date = params.end_date;
+
     var creator = params.creator;
     var locale = params.locale;
     var notes = params.notes;
-	var physdesc = params.physdesc;
+    var physdesc = params.physdesc;
 	var phystech = params.phystech;
+
     var current_location = params.current_location;
 
-    var expedition_xml = generateExpeditionXML(1,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
-    var person_xml = generatePersonXML(1,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
+    var expedition_num = 1;
+    var person_num = 1;
+
+    var expedition_xml = generateExpeditionXML(expedition_num,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
+    var person_xml = generatePersonXML(person_num,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
+
+    var expedition_record_id = createRecordIdString(expedition_num);
+    var person_record_id = createRecordIdString(person_num);
+
 	generateExpeditionResource(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res);
 	// create agent and resource for expedition if new
 	// create agent for creator if new
 
-   
+    
 };
-
+    
 var generateExpeditionAgent = function(){}
 
 var generateExpeditionResource = function(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res){
@@ -199,15 +208,15 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
         // req.flash('error', bodyJSON.error);
         // res.redirect('login');
 
-	    var saveExpedition = new Expedition({
-	      xml: expedition_xml
-	    }).save();
-	    var savePerson = Person({
-	      xml: person_xml
-	    }).save();
+    var saveExpedition = new Expedition({
+      xml: expedition_xml
+    }).save();
+    var savePerson = Person({
+      xml: person_xml
+    }).save();
 
-	    Promise.all([saveExpedition, savePerson]).then(() => {
-	      res.send({ 'expedition': expedition_xml, 'person': person_xml });
+    Promise.all([saveExpedition, savePerson]).then(() => {
+      res.send({ 'expedition': expedition_xml, 'person': person_xml });
 	    });
     });
 	
@@ -384,8 +393,13 @@ var generateMaintenanceEvent = function(description) {
 }
 
 // <recordId>amnhc_6000001</recordId>
+
+var createRecordIdString = function(category, num){
+    return 'amnh' + category + '_' + num;
+}
+
 var generateRecordId = function(category, num) {
-    return { 'recordId': 'amnh' + category + '_' + num };
+    return { 'recordId': createRecordIdString(category, num) };
 }
 
 var generateExpeditionXML = function(num, event_description, name, date, location, notes, creator, fieldResource) {

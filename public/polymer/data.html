@@ -10,6 +10,13 @@
       font-size: 10px;
       color: #aeaeae;
     }
+    iron-icon{
+      padding: 4px;
+      color: #B0BEC5;
+    }
+    .card-content{
+      font-size: 17px;
+    }
   </style>
 
   <iron-ajax auto url="/expedition/all" last-response="{{data}}"></iron-ajax>
@@ -22,16 +29,32 @@
   </template>-->
 
   <template is="dom-repeat" items="{{parseText(data.expeditions)}}">
-    <paper-card heading="Expedition {{item.title}}">
+    <paper-card heading="Expedition: {{item.title}}">
       <div class="card-content">
-        <b>Title: </b>{{item.title}}<br>
-        <b>Date:  </b>{{item.date}}<br>
-        <b>Person: </b>{{item.person}}<br>
-        <b>Location: </b>{{item.place}}<br>
-        <b>Notes: </b>{{item.notes}}<br>
+        <iron-icon icon="icons:explore"></iron-icon><b>Title: </b>{{item.title}}<br>
+        <iron-icon icon="icons:date-range"></iron-icon><b>Date:  </b>{{item.date}}<br>
+        <iron-icon icon="maps:directions-run"></iron-icon><b>Person: </b>{{item.person}}<br>
+        <iron-icon icon="maps:person-pin-circle"></iron-icon><b>Location: </b>{{item.place}}<br>
+        <iron-icon icon="icons:create"></iron-icon><b>Notes: </b>{{item.notes}}<br>
       </div>
-      <b>XML-Content:</b><br><div class="xml-content">{{item.xml}}</div>
+      <div class="card-actions">
+        <paper-icon-button icon="icons:arrow-drop-up" title="more info" onclick="_toggle()" style="float:right;">
+        </paper-icon-button>
+        <iron-collapse id="more-info" style="width:100%;">
+          <h3>XML-Content:</h3><br><div class="xml-content">{{item.xml}}</div>
+        </iron-collapse>
+        <script>
+          function _toggle() {
+            var moreInfo = document.getElementById('more-info');
+            var iconButton = Polymer.dom(event).localTarget;
+            iconButton.icon = moreInfo.opened ? 'icons:arrow-drop-up'
+                                              : 'icons:arrow-drop-down';
+            moreInfo.toggle();
+          }
+        </script>
+      </div>
     </paper-card>
+
   </template>
 
   </template>
@@ -54,6 +77,9 @@
           var xmldata = {xml: $detail, title: $title, date: $date, person: $person, place: $placeEntry, notes: $notes};
           return xmldata;
         });
+      },
+      _toggle: function(){
+        console.log("dog");
       }
     });
 

@@ -17,3 +17,5 @@ $ bower install
 $ node app.js
 # go to localhost:3000
 ```
+
+Slides can be found at: https://docs.google.com/presentation/d/1BoCTG8vudWISQQ4EAejh4000eQWnjRFzcJuq1vbojXU/edit?usp=sharing

@@ -1,0 +1,21 @@
+{
+  "name": "lucinda",
+  "description": "A boilerplate for Node.js web applications",
+  "main": "",
+  "authors": [
+    "Lucinda"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/HackTheStacks/lucinda",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.7.0"
+  }
+}

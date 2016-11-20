@@ -1,6 +1,6 @@
 <dom-module id="lucinda-form">
   <template>
-    <iron-form>
+    <form is="iron-form" id="form" on-iron-form-presubmit="presubmit">
       <paper-input name="title" label="Title"></paper-input>
       <paper-input name="expedition" label="Expedition"></paper-input>
       <paper-input name="dates" label="Dates"></paper-input>
@@ -9,18 +9,21 @@
       <paper-textarea name="notes" label="Notes"></paper-textarea>
       <paper-input name="current_location" label="Current Location"></paper-input>
 
-      <paper-button raised onclick="submitForm()">Submit</paper-button>
-    </iron-form>
+      <paper-button raised on-tap="submitForm">Submit</paper-button>
+    </form>
   </template>
 
   <script>
     Polymer({
       is: 'lucinda-form',
-      submitForm: function() {
-        console.error('TODO!');
+      presubmit: function() {
+        var params = this.$.form.request.params;
+        // TODO add any changes to request parameters here
+      },
+      submitForm: function(e) {
+        this.$.form.submit();
       }
     });
-
   </script>
 </dom-module>
 

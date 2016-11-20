@@ -89,8 +89,11 @@ exports.postCreateExpedition = (req, res) => {
     var notes = params.notes;
     var current_location = params.current_location;
 
-    var expedition_xml = generateExpeditionXML(1,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
-    var person_xml = generatePersonXML(1,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
+    var expedition_num = 1;
+    var person_num = 1;
+
+    var expedition_xml = generateExpeditionXML(expedition_num,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
+    var person_xml = generatePersonXML(person_num,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
 
     var saveExpedition = new Expedition({
       xml: expedition_xml
@@ -271,8 +274,13 @@ var generateMaintenanceEvent = function(description) {
 }
 
 // <recordId>amnhc_6000001</recordId>
+
+var createRecordIdString = function(category, num){
+    return 'amnh' + category + '_' + num;
+}
+
 var generateRecordId = function(category, num) {
-    return { 'recordId': 'amnh' + category + '_' + num };
+    return { 'recordId': createRecordIdString(category, num) };
 }
 
 var generateExpeditionXML = function(num, event_description, name, date, location, notes, creator, fieldResource) {

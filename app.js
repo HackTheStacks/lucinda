@@ -125,6 +125,7 @@ app.get('/expedition', homeController.index);
 app.get('/expedition/login', expeditionController.getLogin);
 app.post('/expedition/login', expeditionController.postLogin);
 app.get('/expedition/search', expeditionController.mockSearch);
+app.get('/expedition/all', expeditionController.getAll);
 
 
 app.post('/', expeditionController.postCreateExpedition);

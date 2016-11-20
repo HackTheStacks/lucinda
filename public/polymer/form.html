@@ -23,10 +23,16 @@
         csrf: String,
       },
       presubmit: function() {
-        var params = this.$.form.request.params;
-        params.selectedExpedition = this.selectedExpedition;
-        // saved value to look at post request
-        // TODO add any changes to request parameters here
+        var body = this.$.form.request.body;
+        if (this.selectedExpedition) {
+          body.selectedExpedition = this.selectedExpedition;
+        }
+
+        for (var i in body) {
+          if (typeof(body[i]) === 'undefined') {
+            body[i] = '';
+          }
+        }
       },
       submitForm: function(e) {
         this.$.form.submit();

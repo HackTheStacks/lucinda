@@ -55,6 +55,7 @@
         if (this.selectedExpedition) {
           body.selectedExpedition = this.selectedExpedition;
         }
+        body.expedition = this.$.expedition.text;
 
         for (var i in body) {
           if (typeof(body[i]) === 'undefined') {

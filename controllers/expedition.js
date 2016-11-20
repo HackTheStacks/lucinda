@@ -97,19 +97,47 @@ exports.postCreateExpedition = (req, res) => {
     });
 };
 
-exports.mockSearch = (req, res) => {
-    var query = req.param('q', '');
-    if (!query) {
-        res.send(JSON.stringify([]));
-        return;
-    }
+exports.expeditionSearch = (req, res) => {
+  var query = req.query['q'] || '';
+  if (!query) {
+    res.json([]);
+    return;
+  }
 
-    res.json([
-        { text: query + 'foo', id: 'amnhc_00' },
-        { text: query + 'bar', id: 'amnhc_01' },
-        { text: query + 'baz', id: 'amnhc_02' },
-        { text: query + 'flux', id: 'amnhc_03' }
-    ]);
+  var requestOptions = {
+    url: 'http://10.20.40.218:3000/api/v1/expeditions',
+    qs: { name: query }
+  };
+
+  request.get(requestOptions, (error, response, body) => {
+    try {
+      body = JSON.parse(body);
+    } catch (e) {
+      console.error('Exception parsing serach response', e);
+      res.json([]);
+    }
+    res.json(body.map((item) => {
+      item.text = item.name;
+      delete item.name;
+      return item;
+    }));
+  });
+}
+
+exports.mockSearch = (req, res) => {
+  // keeping this around just in case
+  var query = req.query['q'] || '';
+  if (!query) {
+    res.send(JSON.stringify([]));
+    return;
+  }
+
+  res.json([
+      { text: query + 'foo', id: 'amnhc_00' },
+      { text: query + 'bar', id: 'amnhc_01' },
+      { text: query + 'baz', id: 'amnhc_02' },
+      { text: query + 'flux', id: 'amnhc_03' }
+  ]);
 }
 
 exports.getAll = (req, res) => {

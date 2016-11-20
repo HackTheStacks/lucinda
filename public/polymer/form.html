@@ -1,5 +1,13 @@
 <dom-module id="lucinda-form">
   <template>
+  <style is="custom-style">
+    paper-button.blue {
+      background: #4885ed;
+      color: white;
+      font-size: 20px;
+      margin-top: 12px;
+    }
+  </style>
     <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" method="POST">
       <paper-input name="title" label="Title"></paper-input>
       <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
@@ -9,8 +17,7 @@
       <paper-textarea name="notes" label="Notes"></paper-textarea>
       <paper-input name="current_location" label="Current Location"></paper-input>
 
-
-      <paper-button raised on-tap="submitForm">Submit</paper-button>
+      <paper-button raised on-tap="submitForm" class="blue">Submit</paper-button>
 
       <input type="hidden" name="_csrf" value="[[csrfToken]]" />
     </form>

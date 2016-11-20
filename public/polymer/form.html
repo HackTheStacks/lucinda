@@ -2,7 +2,7 @@
   <template>
     <form is="iron-form" id="form" on-iron-form-presubmit="presubmit">
       <paper-input name="title" label="Title"></paper-input>
-      <paper-input name="expedition" label="Expedition"></paper-input>
+      <paper-autocomplete id="expedition" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
       <paper-input name="dates" label="Dates"></paper-input>
       <paper-input name="creator" label="Creator"></paper-input>
       <paper-input name="locale" label="Where"></paper-input>
@@ -22,6 +22,23 @@
       },
       submitForm: function(e) {
         this.$.form.submit();
+      },
+      autocompleteExpedition: function(e) {
+        var input = this.$.expedition;
+        var search = input.text;
+        var url = '/expedition/search?q=' + search;
+        var req= new XMLHttpRequest();
+        req.open('GET', encodeURI(url));
+        req.onload = function() {
+          if (req.status === 200) {
+            var data = JSON.parse(req.response);
+            var arr = data.map(function(obj) {
+              return {text: obj.text, value: obj.id };
+            });
+            input.suggestions(arr);
+          }
+        };
+        req.send();
       }
     });
   </script>

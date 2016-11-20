@@ -63,7 +63,6 @@ exports.postLogin = (req, res) => {
     });
 };
 
-
 /**
  * POST /
  * Create an expedition.
@@ -72,3 +71,18 @@ exports.postCreateExpedition = (req, res) => {
 
     res.send({'success':true});
 };
+
+exports.mockSearch = (req, res) => {
+  var query = req.param('q', '');
+  if (!query) {
+    res.send(JSON.stringify([]));
+    return;
+  }
+
+  res.send(JSON.stringify([
+    { text: query + 'foo', id: 'amnhc_00' },
+    { text: query + 'bar', id: 'amnhc_01' },
+    { text: query + 'baz', id: 'amnhc_02' },
+    { text: query + 'flux', id: 'amnhc_03' }
+  ]));
+}

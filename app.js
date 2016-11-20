@@ -111,7 +111,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 /**
  * Primary app routes.
@@ -140,6 +140,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/expedition', homeController.index);
 app.get('/expedition/login', expeditionController.getLogin);
 app.post('/expedition/login', expeditionController.postLogin);
+app.get('/expedition/search', expeditionController.mockSearch);
 
 
 app.post('/', expeditionController.postCreateExpedition);

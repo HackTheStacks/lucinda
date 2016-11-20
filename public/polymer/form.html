@@ -34,23 +34,27 @@
       selectedExpeditionValue: function(e, selected) {
         this.selectedExpedition = selected.value;
       },
-      autocompleteExpedition: function(e) {
-        var input = this.$.expedition;
-        var search = input.text;
-        var url = '/expedition/search?q=' + search;
-        var req= new XMLHttpRequest();
-        req.open('GET', encodeURI(url));
-        req.onload = function() {
-          if (req.status === 200) {
-            var data = JSON.parse(req.response);
-            var arr = data.map(function(obj) {
-              return {text: obj.text, value: obj.id };
-            });
-            input.suggestions(arr);
-          }
-        };
-        req.send();
-      }
+      autocompleteExpedition: _GenerateAutocompleter('/expedition/search?q=')
     });
+
+  function _GenerateAutocompleter(endpoint) {
+    return function(e) {
+      var input = e.target;
+      var search = input.text;
+      var url = endpoint + search;
+      var req= new XMLHttpRequest();
+      req.open('GET', encodeURI(url));
+      req.onload = function() {
+        if (req.status === 200) {
+          var data = JSON.parse(req.response);
+          var arr = data.map(function(obj) {
+            return {text: obj.text, value: obj.id };
+          });
+          input.suggestions(arr);
+        }
+      };
+      req.send();
+    }
+  }
   </script>
 </dom-module>

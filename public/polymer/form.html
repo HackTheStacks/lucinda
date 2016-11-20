@@ -12,10 +12,15 @@
       <paper-input name="title" label="Title"></paper-input>
       <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
       <paper-input name="dates" label="Dates"></paper-input>
+	  <paper-input name="start_date" label="Start Date" placeholder="YYYY-MM-DD or YYYY"></paper-input>
+	  <paper-input name="end_date" label="End Date" placeholder="YYYY-MM-DD or YYYY"></paper-input>
       <paper-input name="creator" label="Creator"></paper-input>
-      <paper-input name="locale" label="Where"></paper-input>
-      <paper-textarea name="notes" label="Notes"></paper-textarea>
-      <paper-input name="current_location" label="Current Location"></paper-input>
+      <paper-input name="locale" label="Where Did This Expedition Take Place"></paper-input>
+      <paper-textarea name="notes" label="Notes" placeholder="e.g. funder, expedition goals, additional participants
+"></paper-textarea>
+	  <paper-textarea name="physdesc" label="Physical Description of the Resources"></paper-textarea>
+	  <paper-textarea name="phystech" label="Digitization" placeholder="Are these resources digitized? If so, where?"></paper-textarea>
+      <paper-input name="current_location" label="Current Location of the Resources"></paper-input>
 
       <paper-button raised on-tap="submitForm" class="blue">Submit</paper-button>
 
@@ -43,6 +48,7 @@
         }
       },
       submitForm: function(e) {
+		// TODO POST to backend
         this.$.form.submit();
       },
       selectedExpeditionValue: function(e, selected) {

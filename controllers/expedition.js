@@ -84,25 +84,132 @@ exports.postCreateExpedition = (req, res) => {
 
     var title = params.title;
     var dates = params.dates;
+	var start_date = params.start_date;
+	var end_date = params.end_date;
     var creator = params.creator;
     var locale = params.locale;
     var notes = params.notes;
+	var physdesc = params.physdesc;
+	var phystech = params.phystech;
     var current_location = params.current_location;
 
     var expedition_xml = generateExpeditionXML(1,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
     var person_xml = generatePersonXML(1,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
+	generateExpeditionResource(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res);
+	// create agent and resource for expedition if new
+	// create agent for creator if new
 
-    var saveExpedition = new Expedition({
-      xml: expedition_xml
-    }).save();
-    var savePerson = Person({
-      xml: person_xml
-    }).save();
-
-    Promise.all([saveExpedition, savePerson]).then(() => {
-      res.send({ 'expedition': expedition_xml, 'person': person_xml });
-    });
+   
 };
+
+var generateExpeditionAgent = function(){}
+
+var generateExpeditionResource = function(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res){
+    var resource = { 
+		"jsonmodel_type":"resource",
+		//TODO: subjects
+		"extents":[
+			{ 
+				"jsonmodel_type":"extent",
+				"portion":"whole",
+				"number":"0",
+				"extent_type":"boxes."
+			}
+		],
+		"dates":[
+			{ 
+				"jsonmodel_type":"date",
+				"date_type":"inclusive",
+				"label":"creation",
+				"begin":start_date,
+				"end":end_date,
+			}
+		],
+		"linked_agents":[],
+		"notes":[
+			{
+				"jsonmodel_type": "note_multipart",
+				"label": "Biographical Note",
+				"subnotes": [
+					{
+						"content":notes,
+						"jsonmodel_type":"note_text",
+					}
+				],
+				"type":"bioghist",
+			},
+			{
+				"content":physdesc,
+				"jsonmodel_type":"note_singlepart",
+				"label": "General Physical Description note",
+				"type": "physdesc",
+			},
+			{
+				"jsonmodel_type":"note_multipart",
+				"label":"Physical description and technical requirements",
+				"subnotes": [
+					{
+						"content":phystech,
+						"jsonmodel_type":"note_text",
+					}
+				],
+				"type":phystech,
+			},
+			{
+				"content":current_location,
+				"jsonmodel_type":"note_singlepart",
+				"label": "Current Location",
+				"type":"physloc",
+			}
+		],
+		"title":title,
+		"id_0":"EXP",
+		"id_1":Math.trunc(Math.random()*1000),
+		"level":"collection",
+		"language":"eng",
+	};
+	console.log(resource)
+	var options = {
+        method: 'POST',
+        url: 'http://data.library.amnh.org:8089/repositories/4/resources',
+        headers:
+        {
+            'X-ArchivesSpace-Session': localStorage.getItem('session'),
+        },
+        data: JSON.stringify(resource),
+    };
+
+    request(options, function(error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+        // var bodyJSON = JSON.parse(body);
+        // console.log(bodyJSON.session);
+        // req.flash('session', bodyJSON.session);
+        // console.log('response');
+        // console.log(response);
+
+        // req.flash('test', 'yay!');
+        // req.flash('error', bodyJSON.error);
+        // res.redirect('login');
+
+	    var saveExpedition = new Expedition({
+	      xml: expedition_xml
+	    }).save();
+	    var savePerson = Person({
+	      xml: person_xml
+	    }).save();
+
+	    Promise.all([saveExpedition, savePerson]).then(() => {
+	      res.send({ 'expedition': expedition_xml, 'person': person_xml });
+	    });
+    });
+	
+	
+}
+
+var generateCreatorAgent = function(){}
+
 
 exports.mockSearch = (req, res) => {
     var query = req.param('q', '');

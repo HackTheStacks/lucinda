@@ -2,7 +2,7 @@
   <template>
     <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" method="POST">
       <paper-input name="title" label="Title"></paper-input>
-      <paper-autocomplete id="expedition" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
+      <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
       <paper-input name="dates" label="Dates"></paper-input>
       <paper-input name="creator" label="Creator"></paper-input>
       <paper-input name="locale" label="Where"></paper-input>
@@ -18,10 +18,15 @@
       is: 'lucinda-form',
       presubmit: function() {
         var params = this.$.form.request.params;
+        params.selectedExpedition = this.selectedExpedition;
+        // saved value to look at post request
         // TODO add any changes to request parameters here
       },
       submitForm: function(e) {
         this.$.form.submit();
+      },
+      selectedExpeditionValue: function(e, selected) {
+        this.selectedExpedition = selected.value;
       },
       autocompleteExpedition: function(e) {
         var input = this.$.expedition;
@@ -43,4 +48,3 @@
     });
   </script>
 </dom-module>
-

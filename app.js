@@ -32,6 +32,7 @@ dotenv.load({ path: '.env.example' });
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
+const expeditionController = require('./controllers/expedition');
 const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
@@ -134,9 +135,17 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**
+ * Expedition routes
+ */
+app.get('/expedition', homeController.index);
+app.get('/expedition/login', expeditionController.getLogin);
+app.post('/expedition/login', expeditionController.postLogin);
+
+/**
  * API examples routes.
  */
 app.get('/api', apiController.getApi);
+app.get('/api/expedition', apiController.getExpedition);
 app.get('/api/lastfm', apiController.getLastfm);
 app.get('/api/nyt', apiController.getNewYorkTimes);
 app.get('/api/aviary', apiController.getAviary);

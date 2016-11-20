@@ -34,6 +34,35 @@ exports.getApi = (req, res) => {
 };
 
 /**
+ * GET /api
+ * List of API examples.
+ */
+exports.getExpedition = (req, res) => {
+
+  var options = { method: 'GET',
+    url: 'http://data.library.amnh.org:8089/repositories/4/resources',
+    qs: { page: '1', page_size: '10' },
+    headers: 
+    { 'postman-token': '3a9207a6-e59c-e5aa-a3d5-ee4e9376b1f1',
+      'cache-control': 'no-cache',
+      'x-archivesspace-session': '386d2c38a045e8e2e9892ce8edff828fdea6d78f1ca911549b8b5e36f8aac765',
+      'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
+    formData: { password: 'hackthestacks' } };
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+
+    console.log(body);
+    res.render('api/expedition', {
+      title: 'Expeditions',
+      expeditions: body
+    });
+
+  });
+
+};
+
+/**
  * GET /api/foursquare
  * Foursquare API example.
  */

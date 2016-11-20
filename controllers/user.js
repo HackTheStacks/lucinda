@@ -22,29 +22,52 @@ exports.getLogin = (req, res) => {
  * Sign in using email and password.
  */
 exports.postLogin = (req, res, next) => {
-  req.assert('email', 'Email is not valid').isEmail();
+  // req.assert('email', 'Email is not valid').isEmail();
   req.assert('password', 'Password cannot be blank').notEmpty();
-  req.sanitize('email').normalizeEmail({ remove_dots: false });
+  // req.sanitize('email').normalizeEmail({ remove_dots: false });
+  
+  console.log("login info:")
+  console.log(req);
 
   const errors = req.validationErrors();
 
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/login');
-  }
 
-  passport.authenticate('local', (err, user, info) => {
-    if (err) { return next(err); }
-    if (!user) {
-      req.flash('errors', info);
-      return res.redirect('/login');
-    }
-    req.logIn(user, (err) => {
-      if (err) { return next(err); }
-      req.flash('success', { msg: 'Success! You are logged in.' });
-      res.redirect(req.session.returnTo || '/');
-    });
-  })(req, res, next);
+  var options = { method: 'POST',
+    url: 'http://data.library.amnh.org:8089/users/bnorvig/login',
+    headers: 
+    { 'postman-token': '8d00219d-4145-dee0-42fa-76990e7387ad',
+      'cache-control': 'no-cache',
+      authorization: 'Basic Ym5vcnZpZzpoYWNrdGhlc3RhY2tz',
+      'content-type': 'multipart/form-data; boundary=---011000010111000001101001' },
+    formData: { password: 'hackthestacks' } };
+
+  request(options, function (error, response, body) {
+    if (error) throw new Error(error);
+
+    console.log(body);
+    req.flash('test', 'yay!');
+    req.flash()
+    res.redirect('/login');
+
+  });
+
+  // if (errors) {
+  //   req.flash('errors', errors);
+  //   return res.redirect('/login');
+  // }
+
+  // passport.authenticate('local', (err, user, info) => {
+  //   if (err) { return next(err); }
+  //   if (!user) {
+  //     req.flash('errors', info);
+  //     return res.redirect('/login');
+  //   }
+  //   req.logIn(user, (err) => {
+  //     if (err) { return next(err); }
+  //     req.flash('success', { msg: 'Success! You are logged in.' });
+  //     res.redirect(req.session.returnTo || '/');
+  //   });
+  // })(req, res, next);
 };
 
 /**

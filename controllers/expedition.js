@@ -82,7 +82,8 @@ exports.postCreateExpedition = (req, res) => {
 
     var params = req.body;
 
-    var title = params.title;
+    // var title = params.title;
+	var expedition = params.expedition;
     var dates = params.dates;
     var start_date = params.start_date;
 	var end_date = params.end_date;
@@ -98,28 +99,85 @@ exports.postCreateExpedition = (req, res) => {
     var expedition_num = 1;
     var person_num = 1;
 
-    var expedition_xml = generateExpeditionXML(expedition_num,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
-    var person_xml = generatePersonXML(person_num,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
+    var expedition_xml = generateExpeditionXML(expedition_num,'test_event_description', expedition, dates, locale, notes, creator, 'Test field resource');
+    var person_xml = generatePersonXML(person_num,'test_event_description', expedition, dates, locale, '', creator, 'Test field resource');
 
     var expedition_record_id = createRecordIdString('c', expedition_num);
     var person_record_id = createRecordIdString('p', person_num);
 
-	generateExpeditionResource(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res);
-	// create agent and resource for expedition if new
-	// create agent for creator if new
+	console.log("expedition:", expedition);
+	postToArchivesSpace(expedition, start_date, end_date, creator, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res, expedition_record_id, person_record_id);
+	// TODO only create agent and resource for expedition if new
+	// TODO only create agent for creator if new
 
     
 };
     
 var generateExpeditionAgent = function(){}
 
-var generateExpeditionResource = function(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res){
+var postToArchivesSpace = function(title, start_date, end_date, creator, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res, expedition_record_id, person_record_id){
     var agent_person = {
-    	"jsonmodel_type":"agent",
+    	"jsonmodel_type":"agent_person",
+		"authority_id":person_record_id,
+		"names": [
+			{
+				"jsonmodel_type":"name_person",
+				"primary_name":creator,
+				"sort_name":creator,
+				"name_order":"direct",
+				"source":"local",
+			}
+		],
+			
+		
     }
+	
+	var agent_person_options = {
+        method: 'POST',
+        url: 'http://data.library.amnh.org:8089/agents/people',
+        headers:
+        {
+            'X-ArchivesSpace-Session': localStorage.getItem('session'),
+        },
+        json: agent_person,
+    };
+	
+    request(agent_person_options, function(error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
+    });
+	
 	var agent_expedition = {
-		"jsonmodel_type":"agent_corporate_identity"
+		"jsonmodel_type":"agent_corporate_identity",
+		"authority_id":expedition_record_id,
+		"names": [
+			{
+				"jsonmodel_type": "name_corporate_entity",
+				"primary_name":title,
+				"sort_name":title,
+				"source":"local",
+			}
+		],
+		
 	}
+	
+	var agent_expedition_options = {
+        method: 'POST',
+        url: 'http://data.library.amnh.org:8089/agents/corporate_entities',
+        headers:
+        {
+            'X-ArchivesSpace-Session': localStorage.getItem('session'),
+        },
+        json: agent_expedition,
+    };
+	
+    request(agent_expedition_options, function(error, response, body) {
+        if (error) throw new Error(error);
+
+        console.log(body);
+    
+    });
+	
 	var resource = { 
 		"jsonmodel_type":"resource",
 		//TODO: subjects
@@ -183,7 +241,7 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
 		"level":"collection",
 		"language":"eng",
 	};
-	console.log(resource)
+
 	var options = {
         method: 'POST',
         url: 'http://data.library.amnh.org:8089/repositories/4/resources',
@@ -198,15 +256,6 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
         if (error) throw new Error(error);
 
         console.log(body);
-        // var bodyJSON = JSON.parse(body);
-        // console.log(bodyJSON.session);
-        // req.flash('session', bodyJSON.session);
-        // console.log('response');
-        // console.log(response);
-
-        // req.flash('test', 'yay!');
-        // req.flash('error', bodyJSON.error);
-        // res.redirect('login');
 
     var saveExpedition = new Expedition({
       xml: expedition_xml

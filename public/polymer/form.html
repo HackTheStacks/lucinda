@@ -16,9 +16,8 @@
     </paper-dialog>
 
     <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" on-iron-form-response="responseHandler" method="POST">
-      <paper-input name="title" label="Title"></paper-input>
       <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
-      <paper-input name="dates" label="Dates"></paper-input>
+	  <paper-input name="dates" label="Dates"></paper-input>
 	  <paper-input name="start_date" label="Start Date" placeholder="YYYY-MM-DD or YYYY"></paper-input>
 	  <paper-input name="end_date" label="End Date" placeholder="YYYY-MM-DD or YYYY"></paper-input>
       <paper-input name="creator" label="Creator"></paper-input>
@@ -78,7 +77,7 @@
         localStorage["person"] = xmls.person;
         console.log(xmls);
 
-        this.$.form.reset();
+        // this.$.form.reset();
         this.$.success.open();
       },
       autocompleteExpedition: _GenerateAutocompleter('/expedition/search?q=')

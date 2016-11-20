@@ -5,8 +5,8 @@ const request = require('request');
 const cheerio = require('cheerio');
 
 /**
- * GET /api
- * List of API examples.
+ * GET /login
+ * Login page.
  */
 exports.getLogin = (req, res) => {
     var obj = req.flash();
@@ -15,7 +15,7 @@ exports.getLogin = (req, res) => {
     if(obj.session != null){
         res.header('X-ArchivesSpace-Session', obj.session);
     }
-    // console.log(res.header('X-ArchivesSpace-Session'));
+    console.log(req.header('X-ArchivesSpace-Session'));
     res.render('expedition/login', {
         title: 'Expedition Login!',
         obj: obj,
@@ -25,8 +25,8 @@ exports.getLogin = (req, res) => {
 };
 
 /**
- * GET /api
- * List of API examples.
+ * POST /login
+ * Execute a login.
  */
 exports.postLogin = (req, res) => {
 
@@ -61,6 +61,15 @@ exports.postLogin = (req, res) => {
         res.redirect('login');
 
     });
+};
+
+/**
+ * POST /
+ * Create an expedition.
+ */
+exports.postCreateExpedition = (req, res) => {
+
+    res.send({'success':true});
 };
 
 exports.mockSearch = (req, res) => {

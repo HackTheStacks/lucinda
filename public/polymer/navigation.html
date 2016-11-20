@@ -1,14 +1,26 @@
 <dom-module id="lucinda-navigation">
   <template>
-    <paper-toolbar>
-    <paper-icon-button icon="menu" on-tap="menuAction"></paper-icon-button>
-    <div class="title">Lucinda<div>
-  </paper-toolbar>
+  <style is="custom-style">
+    paper-tabs{
+      background-color: #7986CB;
+      color: white;
+    }
+  </style>
+    <paper-toolbar class="medium-tall">
+      <span class="bottom title" style="font-size:25px; font-weight:500">Lucinda</span>
+      </paper-toolbar>
+      <paper-tabs selected="{{selected}}">
+        <paper-tab>Expedition Tracker</paper-tab>
+        <paper-tab>Catalogue</paper-tab>
+      </paper-tabs>
   </template>
 
   <script>
     Polymer({
       is: 'lucinda-navigation',
+      ready: function(){
+        console.log(this.selected);
+      },
     });
   </script>
 </dom-module>

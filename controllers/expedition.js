@@ -62,3 +62,18 @@ exports.postLogin = (req, res) => {
 
     });
 };
+
+exports.mockSearch = (req, res) => {
+  var query = req.param('q', '');
+  if (!query) {
+    res.send(JSON.stringify([]));
+    return;
+  }
+
+  res.send(JSON.stringify([
+    { text: query + 'foo', id: 'amnhc_00' },
+    { text: query + 'bar', id: 'amnhc_01' },
+    { text: query + 'baz', id: 'amnhc_02' },
+    { text: query + 'flux', id: 'amnhc_03' }
+  ]));
+}

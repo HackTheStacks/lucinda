@@ -140,6 +140,7 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/expedition', homeController.index);
 app.get('/expedition/login', expeditionController.getLogin);
 app.post('/expedition/login', expeditionController.postLogin);
+app.get('/expedition/search', expeditionController.mockSearch);
 
 /**
  * API examples routes.

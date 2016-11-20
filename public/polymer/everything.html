@@ -1,8 +1,16 @@
 <dom-module id="lucinda-everything">
   <template>
+  <style is="custom-style">
+    .container {
+      width: 100%;
+      padding: 20px 50px 20px 50px;
+    }
+  </style>
     <lucinda-navigation selected="{{selected}}"></lucinda-navigation>
+  <div class = "container">
     <lucinda-form csrf-token="[[ csrfToken ]]" hidden$="{{_notEqual(selected, 0)}}"></lucinda-form>
-    <p hidden$="{{_notEqual(selected, 1)}}">This is the catalogue!</p>
+    <lucinda-catalogue hidden$="{{_notEqual(selected, 1)}}"></lucinda-catalogue>
+  </div>
   </template>
 
   <script>

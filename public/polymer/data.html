@@ -2,17 +2,33 @@
   <template>
   <style is="custom-style">
   </style>
-  <paper-card heading="Catalogue Title">
-    <div class="card-content">Catalogue Data</div>
-    <div class="card-actions">
-      <paper-button>Catalogue Action</paper-button>
-    </div>
-  </paper-card>
+
+  <iron-ajax auto url="/expedition/all" last-response="{{data}}"></iron-ajax>
+
+  <template is="dom-repeat" items="{{data.people}}">
+    <paper-card heading="Person">
+      <div class="card-content">{{item}}</div>
+      <div class="card-actions">
+        <paper-button>Catalogue Action</paper-button>
+      </div>
+    </paper-card>
+  </template>
+
+  <template is="dom-repeat" items="{{data.expeditions}}">
+    <paper-card heading="Expedition">
+      <div class="card-content">{{item}}</div>
+      <div class="card-actions">
+        <paper-button>Catalogue Action</paper-button>
+      </div>
+    </paper-card>
+  </template>
+
   </template>
 
   <script>
     Polymer({
       is: 'lucinda-catalogue',
+      data: {people: [], expeditions: []}
     });
   </script>
 </dom-module>

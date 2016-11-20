@@ -5,6 +5,9 @@ const request = require('request');
 const cheerio = require('cheerio');
 const xml = require('xml');
 const moment = require('moment');
+const Person = require('../models/Person');
+const Expedition = require('../models/Expedition');
+
 /**
  * GET /login
  * Login page.
@@ -82,7 +85,16 @@ exports.postCreateExpedition = (req, res) => {
     var expedition_xml = generateExpeditionXML(1,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
     var person_xml = generatePersonXML(1,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
 
-    res.send({ 'expedition': expedition_xml, 'person': person_xml });
+    var saveExpedition = new Expedition({
+      xml: expedition_xml
+    }).save();
+    var savePerson = Person({
+      xml: person_xml
+    }).save();
+
+    Promise.all([saveExpedition, savePerson]).then(() => {
+      res.send({ 'expedition': expedition_xml, 'person': person_xml });
+    });
 };
 
 exports.mockSearch = (req, res) => {

@@ -139,7 +139,7 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
 				"type":"bioghist",
 			},
 			{
-				"content":physdesc,
+				"content":[physdesc],
 				"jsonmodel_type":"note_singlepart",
 				"label": "General Physical Description note",
 				"type": "physdesc",
@@ -153,10 +153,10 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
 						"jsonmodel_type":"note_text",
 					}
 				],
-				"type":phystech,
+				"type":"phystech",
 			},
 			{
-				"content":current_location,
+				"content":[current_location],
 				"jsonmodel_type":"note_singlepart",
 				"label": "Current Location",
 				"type":"physloc",
@@ -164,7 +164,7 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
 		],
 		"title":title,
 		"id_0":"EXP",
-		"id_1":Math.trunc(Math.random()*1000),
+		"id_1":(Math.trunc(Math.random()*1000)).toString(),
 		"level":"collection",
 		"language":"eng",
 	};
@@ -176,7 +176,7 @@ var generateExpeditionResource = function(title, start_date, end_date, notes, ph
         {
             'X-ArchivesSpace-Session': localStorage.getItem('session'),
         },
-        data: JSON.stringify(resource),
+        json: resource,
     };
 
     request(options, function(error, response, body) {

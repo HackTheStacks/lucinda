@@ -8,6 +8,13 @@
       margin-top: 12px;
     }
   </style>
+    <paper-dialog id="success" modal>
+      <p>Successfully submitted!</p>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Tap me to close</paper-button>
+      </div>
+    </paper-dialog>
+
     <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" on-iron-form-response="responseHandler" method="POST">
       <paper-input name="title" label="Title"></paper-input>
       <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
@@ -22,7 +29,11 @@
 	  <paper-textarea name="phystech" label="Digitization" placeholder="Are these resources digitized? If so, where?"></paper-textarea>
       <paper-input name="current_location" label="Current Location of the Resources"></paper-input>
 
-      <paper-button raised on-tap="submitForm" class="blue">Submit</paper-button>
+      <paper-button raised on-tap="submitForm" class="blue">
+        <paper-spinner active hidden$="{{hideSpinner}}"></paper-spinner>
+
+        Submit
+      </paper-button>
 
       <input type="hidden" name="_csrf" value="[[csrfToken]]" />
     </form>
@@ -33,6 +44,10 @@
       is: 'lucinda-form',
       properties: {
         csrf: String,
+        hideSpinner: {
+          type: Boolean,
+          value: true
+        }
       },
       selectedExpedition: null,
       presubmit: function() {
@@ -40,6 +55,7 @@
         if (this.selectedExpedition) {
           body.selectedExpedition = this.selectedExpedition;
         }
+        body.expedition = this.$.expedition.text;
 
         for (var i in body) {
           if (typeof(body[i]) === 'undefined') {
@@ -48,7 +64,7 @@
         }
       },
       submitForm: function(e) {
-		// TODO POST to backend
+        this.hideSpinner = false;
         this.$.form.submit();
       },
       selectedExpeditionValue: function(e, selected) {
@@ -56,11 +72,15 @@
         //TODO should clear when we switch to something other than the selected value
       },
       responseHandler: function(e) {
+        this.hideSpinner = true;
         var xmls = e.detail.response;
         localStorage["expedition"] = xmls.expedition;
         localStorage["person"] = xmls.person;
         console.log(xmls);
-      },   
+
+        this.$.form.reset();
+        this.$.success.open();
+      },
       autocompleteExpedition: _GenerateAutocompleter('/expedition/search?q=')
     });
 

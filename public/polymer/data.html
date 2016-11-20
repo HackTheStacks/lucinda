@@ -1,34 +1,64 @@
 <dom-module id="lucinda-catalogue">
   <template>
   <style is="custom-style">
+    paper-card {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 20px;
+    }
+    .xml-content {
+      font-size: 10px;
+      color: #aeaeae;
+    }
   </style>
 
   <iron-ajax auto url="/expedition/all" last-response="{{data}}"></iron-ajax>
 
-  <template is="dom-repeat" items="{{data.people}}">
+<!--  <template is="dom-repeat" items="{{data.people}}">
     <paper-card heading="Person">
-      <div class="card-content">{{item}}</div>
-      <div class="card-actions">
-        <paper-button>Catalogue Action</paper-button>
+
+      <div class="card-content">{{parseText(item)}}</div>
+    </paper-card>
+  </template>-->
+
+  <template is="dom-repeat" items="{{parseText(data.expeditions)}}">
+    <paper-card heading="Expedition {{item.title}}">
+      <div class="card-content">
+        <b>Title: </b>{{item.title}}<br>
+        <b>Date:  </b>{{item.date}}<br>
+        <b>Person: </b>{{item.person}}<br>
+        <b>Location: </b>{{item.place}}<br>
+        <b>Notes: </b>{{item.notes}}<br>
       </div>
+      <b>XML-Content:</b><br><div class="xml-content">{{item.xml}}</div>
     </paper-card>
   </template>
 
-  <template is="dom-repeat" items="{{data.expeditions}}">
-    <paper-card heading="Expedition">
-      <div class="card-content">{{item}}</div>
-      <div class="card-actions">
-        <paper-button>Catalogue Action</paper-button>
-      </div>
-    </paper-card>
   </template>
-
-  </template>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
     Polymer({
       is: 'lucinda-catalogue',
-      data: {people: [], expeditions: []}
+      data: {people: [], expeditions: []},
+      parseText: function(a){
+        return a.map((e) => {
+          var xml = e,
+              xmlDoc = $.parseXML( xml ),
+              $xml = $( xmlDoc ),
+              $title = $xml.find( "part" ).text(),
+              $date = $xml.find("cpfDescription").find("description").find("existDates").find("date").text(),
+              $person = $xml.find("cpfDescription").find("relations").find("cpfRelation").find("relationEntry").text(),
+              $placeEntry = $xml.find("cpfDescription").find("description").find("places").find("place").find("placeEntry").text(),
+              $notes = $xml.find("cpfDescription").find("description").find("biogHist").find("p").text();
+              $detail = e;
+          var xmldata = {xml: $detail, title: $title, date: $date, person: $person, place: $placeEntry, notes: $notes};
+          return xmldata;
+        });
+      }
     });
+
+
+
+
   </script>
 </dom-module>

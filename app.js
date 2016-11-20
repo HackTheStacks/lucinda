@@ -141,6 +141,9 @@ app.get('/expedition', homeController.index);
 app.get('/expedition/login', expeditionController.getLogin);
 app.post('/expedition/login', expeditionController.postLogin);
 
+
+app.post('/', expeditionController.postCreateExpedition);
+
 /**
  * API examples routes.
  */

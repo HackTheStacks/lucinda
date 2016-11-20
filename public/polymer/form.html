@@ -22,6 +22,7 @@
       properties: {
         csrf: String,
       },
+      selectedExpedition: null,
       presubmit: function() {
         var body = this.$.form.request.body;
         if (this.selectedExpedition) {
@@ -39,6 +40,7 @@
       },
       selectedExpeditionValue: function(e, selected) {
         this.selectedExpedition = selected.value;
+        //TODO should clear when we switch to something other than the selected value
       },
       autocompleteExpedition: _GenerateAutocompleter('/expedition/search?q=')
     });

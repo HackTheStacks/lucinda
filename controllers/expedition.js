@@ -101,8 +101,8 @@ exports.postCreateExpedition = (req, res) => {
     var expedition_xml = generateExpeditionXML(expedition_num,'test_event_description', title, dates, locale, notes, creator, 'Test field resource');
     var person_xml = generatePersonXML(person_num,'test_event_description', title, dates, locale, '', creator, 'Test field resource');
 
-    var expedition_record_id = createRecordIdString(expedition_num);
-    var person_record_id = createRecordIdString(person_num);
+    var expedition_record_id = createRecordIdString('c', expedition_num);
+    var person_record_id = createRecordIdString('p', person_num);
 
 	generateExpeditionResource(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res);
 	// create agent and resource for expedition if new

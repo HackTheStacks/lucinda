@@ -8,7 +8,7 @@
       margin-top: 12px;
     }
   </style>
-    <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" method="POST">
+    <form is="iron-form" id="form" on-iron-form-presubmit="presubmit" on-iron-form-response="responseHandler" method="POST">
       <paper-input name="title" label="Title"></paper-input>
       <paper-autocomplete id="expedition" on-autocomplete-selected="selectedExpeditionValue" on-autocomplete-change="autocompleteExpedition" name="expedition" label="Expedition" remote-source="true" length="2"></paper-autocomplete>
       <paper-input name="dates" label="Dates"></paper-input>
@@ -49,6 +49,12 @@
         this.selectedExpedition = selected.value;
         //TODO should clear when we switch to something other than the selected value
       },
+      responseHandler: function(e) {
+        var xmls = e.detail.response;
+        localStorage["expedition"] = xmls.expedition;
+        localStorage["person"] = xmls.person;
+        console.log(xmls);
+      },   
       autocompleteExpedition: _GenerateAutocompleter('/expedition/search?q=')
     });
 

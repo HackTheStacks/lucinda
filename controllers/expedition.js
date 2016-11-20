@@ -105,7 +105,13 @@ exports.postCreateExpedition = (req, res) => {
 var generateExpeditionAgent = function(){}
 
 var generateExpeditionResource = function(title, start_date, end_date, notes, physdesc, phystech, current_location, expedition_xml, person_xml, res){
-    var resource = { 
+    var agent_person = {
+    	"jsonmodel_type":"agent",
+    }
+	var agent_expedition = {
+		"jsonmodel_type":"agent_corporate_identity"
+	}
+	var resource = { 
 		"jsonmodel_type":"resource",
 		//TODO: subjects
 		"extents":[

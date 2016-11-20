@@ -8,6 +8,11 @@ const moment = require('moment');
 const Person = require('../models/Person');
 const Expedition = require('../models/Expedition');
 
+if (typeof localStorage === "undefined" || localStorage === null) {
+  var LocalStorage = require('node-localstorage').LocalStorage;
+  var localStorage = new LocalStorage('./scratch');
+}
+
 /**
  * GET /login
  * Login page.
@@ -23,7 +28,7 @@ exports.getLogin = (req, res) => {
     res.render('expedition/login', {
         title: 'Expedition Login!',
         obj: obj,
-        header: obj.session,
+        header: localStorage.getItem('session'),
         error: obj.error
     });
 };
@@ -57,6 +62,8 @@ exports.postLogin = (req, res) => {
         var bodyJSON = JSON.parse(body);
         console.log(bodyJSON.session);
         req.flash('session', bodyJSON.session);
+        localStorage.setItem('session', bodyJSON.session);
+
         // console.log('response');
         // console.log(response);
 
